@@ -198,11 +198,17 @@ function initNavigation() {
 
     navLinks.forEach(link => {
         link.addEventListener("click", (e) => {
-            e.preventDefault();
             const tabId = link.getAttribute("data-tab");
+            if (!tabId) return; // Allow default navigation for external links (like Blogger)
+
+            e.preventDefault();
 
             // Update active link
-            navLinks.forEach(item => item.classList.remove("active"));
+            navLinks.forEach(item => {
+                if (item.getAttribute("data-tab")) {
+                    item.classList.remove("active");
+                }
+            });
             link.classList.add("active");
 
             // Update active screen
