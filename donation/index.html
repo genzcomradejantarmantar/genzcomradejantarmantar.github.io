@@ -442,8 +442,7 @@
     <h3>Spread the word</h3>
     <p>The fastest way to help, even if you can't give right now — share this page.</p>
     <div class="share-row">
-      <a class="share-btn" id="shareWhatsapp" href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-      <a class="share-btn" id="shareX" href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i> Post on X</a>
+      <a class="share-btn" href="https://www.instagram.com/genzcomradejantarmantar/reposts/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i> Instagram</a>
       <button class="share-btn" id="copyLink"><i class="fa-solid fa-link"></i> Copy link</button>
     </div>
   </div>
@@ -486,8 +485,6 @@
   // UPI amount logic removed to maintain 100% financial anonymity
 
   const pageUrl = window.location.href;
-  document.getElementById('shareWhatsapp').href = 'https://wa.me/?text=' + encodeURIComponent('Support students at Jantar Mantar — every contribution helps. ' + pageUrl);
-  document.getElementById('shareX').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent('Support students at Jantar Mantar — every contribution helps.') + '&url=' + encodeURIComponent(pageUrl);
   document.getElementById('copyLink').addEventListener('click', async (e) => {
     try{
       await navigator.clipboard.writeText(pageUrl);
