@@ -371,49 +371,14 @@
       <h2>II. Financial Contribution</h2>
       <p>Funds go toward meals, medical care, and legal support. Pick whichever method works for you.</p>
 
-      <div class="amount-row" id="amountRow">
-        <button class="amount-btn" data-amt="100">₹100</button>
-        <button class="amount-btn" data-amt="500">₹500</button>
-        <button class="amount-btn" data-amt="1000">₹1000</button>
-        <button class="amount-btn" data-amt="2500">₹2500</button>
-      </div>
-
-      <div class="custom-amount-row">
-        <span class="custom-currency">₹</span>
-        <input type="number" id="customAmount" class="custom-amount-input" placeholder="Enter custom amount" min="1" step="1">
-        <button class="amount-btn custom-set-btn" id="customSetBtn">Set</button>
-      </div>
-
       <div class="pay-tabs" id="payTabs">
-        <button class="pay-tab active" data-target="upi"><i class="fa-solid fa-indian-rupee-sign"></i> UPI</button>
-        <button class="pay-tab" data-target="trc20"><i class="fa-solid fa-coins"></i> USDT · TRC20</button>
+        <button class="pay-tab active" data-target="trc20"><i class="fa-solid fa-coins"></i> USDT · TRC20</button>
         <button class="pay-tab" data-target="bep20"><i class="fa-solid fa-coins"></i> USDT · BEP20</button>
         <button class="pay-tab" data-target="btc"><i class="fa-brands fa-bitcoin"></i> BTC</button>
       </div>
 
-      <!-- UPI -->
-      <div class="pay-panel active" id="panel-upi">
-        <div class="pay-panel-inner">
-          <div class="qr-box">
-            <img src="../media/upi_qr.jpeg" alt="UPI QR">
-            <span>Scan in any UPI app</span>
-          </div>
-          <div class="pay-details">
-            <span class="network-tag">Instant · INR</span>
-            <div class="addr-row">
-              <span id="upi-id">genzmovementindia@upi</span>
-              <button class="copy-btn" data-copy="genzmovementindia@upi">Copy</button>
-            </div>
-            <a class="upi-pay-link" id="upiPayLink" href="upi://pay?pa=genzmovementindia@upi&pn=GenZ%20Movement%20India%20Fund&cu=INR" target="_blank">
-              <i class="fa-solid fa-mobile-screen-button"></i> Pay via UPI app
-            </a>
-            <p class="pay-warn">Tap an amount above, then "Pay via UPI app" to open your UPI app with the amount pre-filled (works on mobile).</p>
-          </div>
-        </div>
-      </div>
-
       <!-- TRC20 -->
-      <div class="pay-panel" id="panel-trc20">
+      <div class="pay-panel active" id="panel-trc20">
         <div class="pay-panel-inner">
           <div class="qr-box">
             <img src="../media/usdt_trc20_qr.jpeg" alt="USDT TRC20 QR">
@@ -518,34 +483,7 @@
     });
   });
 
-  const amountBtns = document.querySelectorAll('.amount-btn:not(.custom-set-btn)');
-  const upiLink = document.getElementById('upiPayLink');
-  const baseUpi = 'upi://pay?pa=genzmovementindia@upi&pn=GenZ%20Movement%20India%20Fund&cu=INR';
-  const customInput = document.getElementById('customAmount');
-  const customSetBtn = document.getElementById('customSetBtn');
-
-  amountBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      amountBtns.forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      customInput.value = '';
-      upiLink.href = baseUpi + '&am=' + btn.dataset.amt;
-    });
-  });
-
-  function applyCustomAmount(){
-    const val = Math.floor(Number(customInput.value));
-    if (!val || val <= 0){
-      customInput.focus();
-      return;
-    }
-    amountBtns.forEach(b => b.classList.remove('selected'));
-    upiLink.href = baseUpi + '&am=' + val;
-  }
-
-  customSetBtn.addEventListener('click', applyCustomAmount);
-  customInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') applyCustomAmount(); });
-  customInput.addEventListener('input', () => { amountBtns.forEach(b => b.classList.remove('selected')); });
+  // UPI amount logic removed to maintain 100% financial anonymity
 
   const pageUrl = window.location.href;
   document.getElementById('shareWhatsapp').href = 'https://wa.me/?text=' + encodeURIComponent('Support students at Jantar Mantar — every contribution helps. ' + pageUrl);
