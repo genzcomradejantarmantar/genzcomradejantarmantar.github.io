@@ -199,6 +199,27 @@
   }
   .amount-btn:hover, .amount-btn.selected{ background: var(--saffron); border-color: var(--ink); }
 
+  .custom-amount-row{
+    display:flex; align-items:stretch; gap:0; margin-bottom: 22px;
+    border: 2.5px solid var(--ink); max-width: 340px;
+  }
+  .custom-currency{
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-weight:700; font-size:0.95rem;
+    background: var(--ink); color: var(--cream); padding: 0 14px;
+  }
+  .custom-amount-input{
+    flex:1; min-width:0; border:none; outline:none;
+    font-family:'IBM Plex Mono', monospace; font-size:0.9rem; font-weight:600;
+    padding: 10px 12px; background:#fff; color: var(--ink);
+  }
+  .custom-amount-input::placeholder{ color: #8a8578; font-weight:400; }
+  .custom-amount-input::-webkit-outer-spin-button,
+  .custom-amount-input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  .custom-set-btn{
+    border: none; border-left: 2.5px solid var(--ink); padding: 10px 16px;
+  }
+
   /* ================= PAY TABS ================= */
   .pay-tabs{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 18px; }
   .pay-tab{
@@ -357,6 +378,12 @@
         <button class="amount-btn" data-amt="2500">₹2500</button>
       </div>
 
+      <div class="custom-amount-row">
+        <span class="custom-currency">₹</span>
+        <input type="number" id="customAmount" class="custom-amount-input" placeholder="Enter custom amount" min="1" step="1">
+        <button class="amount-btn custom-set-btn" id="customSetBtn">Set</button>
+      </div>
+
       <div class="pay-tabs" id="payTabs">
         <button class="pay-tab active" data-target="upi"><i class="fa-solid fa-indian-rupee-sign"></i> UPI</button>
         <button class="pay-tab" data-target="trc20"><i class="fa-solid fa-coins"></i> USDT · TRC20</button>
@@ -491,16 +518,34 @@
     });
   });
 
-  const amountBtns = document.querySelectorAll('.amount-btn');
+  const amountBtns = document.querySelectorAll('.amount-btn:not(.custom-set-btn)');
   const upiLink = document.getElementById('upiPayLink');
   const baseUpi = 'upi://pay?pa=genzmovementindia@upi&pn=GenZ%20Movement%20India%20Fund&cu=INR';
+  const customInput = document.getElementById('customAmount');
+  const customSetBtn = document.getElementById('customSetBtn');
+
   amountBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       amountBtns.forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
+      customInput.value = '';
       upiLink.href = baseUpi + '&am=' + btn.dataset.amt;
     });
   });
+
+  function applyCustomAmount(){
+    const val = Math.floor(Number(customInput.value));
+    if (!val || val <= 0){
+      customInput.focus();
+      return;
+    }
+    amountBtns.forEach(b => b.classList.remove('selected'));
+    upiLink.href = baseUpi + '&am=' + val;
+  }
+
+  customSetBtn.addEventListener('click', applyCustomAmount);
+  customInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') applyCustomAmount(); });
+  customInput.addEventListener('input', () => { amountBtns.forEach(b => b.classList.remove('selected')); });
 
   const pageUrl = window.location.href;
   document.getElementById('shareWhatsapp').href = 'https://wa.me/?text=' + encodeURIComponent('Support students at Jantar Mantar — every contribution helps. ' + pageUrl);
